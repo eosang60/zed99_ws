@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>car_description</name>
+  <version>0.1.0</version>
+  <description>EV 카트(자율주행차) 전체 URDF 및 센서 배치/TF 트리 정의 패키지</description>
+
+  <maintainer email="youremail@example.com">Your Name</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>urdf</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>zed_wrapper</exec_depend>
+
+  <export>
+    <build_type>catkin</build_type>
+  </export>
+</package>
+

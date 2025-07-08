@@ -1,0 +1,39 @@
+frequency: 30
+sensor_timeout: 0.5
+two_d_mode: true
+publish_tf: true
+odom_frame: odom
+base_link_frame: base_link
+
+imu0: /zed2i/zed_node/imu/data
+imu0_config: [false, false, true,
+              false, false, true,
+              false,  false,  false,
+              false, false, false,
+              false, false, false]
+imu0_remove_gravitational_acceleration: true
+
+gps0: /gps/filtered
+gps0_config: [true, true, false,
+              false, false, false,
+              false, false, false]
+
+initial_state: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+process_noise_covariance:
+  [0.48, 0, 0,
+   0, 0.36, 0,
+   0, 0, 0.91,
+   0.00001, 0.00001, 0.00001,
+   0.025, 0.013, 0.099,
+   0.01, 0.01, 0.01,
+   1e-6, 1e-6, 1e-6]
+
+initial_estimate_covariance:
+  [1e-5, 0, 0,
+   0, 1e-5, 0,
+   0, 0, 1e-5,
+   0, 0, 1e-5,
+   0, 0, 0,
+   0, 0, 0,
+   0, 0, 0]

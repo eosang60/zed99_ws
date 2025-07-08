@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <!-- ========== 런타임 파라미터 설정 ========== -->
+  <arg name="node_name" value="ublox_gps" />
+  <arg name="param_file_name" value="zed-f9p" />
+  <arg name="output" value="screen" />
+  <arg name="respawn" value="true" />
+  <arg name="respawn_delay" value="5" /> <!-- 빠른 재시작 -->
+  <arg name="clear_params" value="true" />
+
+  <!-- ========== 실행 순서 보장용 delay (ublox 초기화 여유) ========== -->
+  <param name="use_sim_time" value="false" />
+  <param name="config_on_start" value="true" />
+
+  <!-- ========== 파라미터 미리 로드: 명확한 위치 지정 ========== -->
+  <rosparam command="load" file="$(find cone_detection)/src/$(arg param_file_name).yaml" />
+
+  <!-- ========== ublox_gps 노드 실행 ========== -->
+  <node pkg="ublox_gps"
+        type="ublox_gps"
+        name="$(arg node_name)"
+        output="$(arg output)"
+        clear_params="$(arg clear_params)"
+        respawn="$(arg respawn)"
+        respawn_delay="$(arg respawn_delay)">
+    <!-- 명시적 장치 설정 파라미터 재확인 -->
+    <param name="device" value="/dev/ttyACM0" />
+    <param name="frame_id" value="gps" />
+    <param name="rate" value="8" />
+  </node>
+</launch>
+

@@ -1,0 +1,29 @@
+<launch>
+  <!-- EKF Localizer -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localizer" clear_params="true" output="screen">
+    <rosparam command="load" file="$(find cone_detection)/src/ekf_config.yaml" />
+  </node>
+
+  <!-- Navsat Transform Node (UBlox GPS → Odom 프레임 연결) -->
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" output="screen">
+    <param name="magnetic_declination_radians" value="0.0"/>
+    <param name="yaw_offset" value="0.0"/>
+    <param name="zero_altitude" value="true"/>
+    <param name="broadcast_cartesian_transform" value="true"/>
+    <param name="broadcast_cartesian_transform_as_parent_frame" value="true"/>
+    <param name="publish_filtered_gps" value="true"/>
+    <param name="filtered_gps_topic" value="/gps/filtered"/>
+    <param name="use_odometry_yaw" value="true"/>
+    <param name="wait_for_datum" value="false"/>
+    
+    <!-- frame 연결 -->
+    <param name="gps_frame" value="gps" />
+    <param name="base_link_frame" value="base_link"/>
+    <param name="odom_frame" value="odom"/>
+
+    <!-- 토픽 remap -->
+    <remap from="imu" to="/zed2i/zed_node/imu/data"/>
+    <remap from="gps" to="/ublox_gps/fix"/>
+    <remap from="odometry/filtered" to="/gps/filtered"/>
+  </node>
+</launch>

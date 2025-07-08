@@ -1,0 +1,33 @@
+<launch>
+  <!-- 런타임 변수 설정 -->
+  <arg name="node_name"       default="ublox_gps"/>
+  <arg name="param_file_name" default="zed-f9p"/>
+  <arg name="output"          default="screen"/>
+  <arg name="respawn"         default="true"/>
+  <arg name="respawn_delay"   default="30"/>
+  <arg name="clear_params"    default="true"/>
+
+  <!-- 시뮬레이션 시간 사용 안 함 (글로벌) -->
+  <param name="use_sim_time" value="false"/>
+
+  <!-- ublox_gps 노드 실행 -->
+  <node pkg="ublox_gps"
+        type="ublox_gps"
+        name="$(arg node_name)"
+        output="$(arg output)"
+        clear_params="$(arg clear_params)"
+        respawn="$(arg respawn)"
+        respawn_delay="$(arg respawn_delay)">
+
+    <!-- 1) config_on_startup 파라미터 이름 수정 & false 로 설정 -->
+    <param name="config_on_startup" value="true"/>
+
+    <!-- 2) YAML 전체를 이 노드의 private 네임스페이스(~)로 로드 -->
+    <rosparam ns="~"
+              file="$(find cone_detection)/src/$(arg param_file_name).yaml"
+              command="load"/>
+
+    <!-- 3) RTCM 토픽 지정 (기존과 동일) -->
+    <param name="rtcm_topic" value="/ublox_gps/rtcm"/>
+  </node>
+</launch>

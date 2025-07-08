@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<rviz version="1.14.10">
+  <VisualizationConfig>
+    <!-- 1) 전역 옵션: map을 글로벌 프레임으로! -->
+    <Displays>
+      <Display name="Global Options" class="rviz::Displays">
+        <FixedFrame>map</FixedFrame>
+        <FrameRate>30</FrameRate>
+      </Display>
+
+      <!-- 2) TF 프레임 트리 (Show Names 켜기) -->
+      <Display name="TF" class="rviz::TF">
+        <Enable>true</Enable>
+        <Show Names>true</Show Names>
+      </Display>
+
+
+      <!-- 4) 그리드 (XY 평면) -->
+      <Display name="Grid" class="rviz::Grid">
+        <Enable>true</Enable>
+        <Plane>XY</Plane>
+        <Cell Count>20</Cell Count>
+        <Cell Size>1</Cell Size>
+        <Color>160; 160; 160</Color>
+      </Display>
+
+      <!-- 5) ZED2i RGB 이미지 -->
+      <Display name="ZED2i RGB Image" class="rviz::Image">
+        <Enable>true</Enable>
+        <Topic>/zed2i/zed_node/rgb_raw/image_raw_color</Topic>
+        <TransportHint>compressed</TransportHint>
+        <QueueSize>10</QueueSize>
+        <Alpha>1.0</Alpha>
+      </Display>
+
+      <!-- 6) ZED2i PointCloud2 -->
+      <Display name="ZED2i Point Cloud" class="rviz::PointCloud2">
+        <Enable>true</Enable>
+        <Topic>/zed2i/zed_node/point_cloud/cloud_registered</Topic>
+        <QueueSize>10</QueueSize>
+        <Style>Points</Style>
+        <ColorTransformer>RGB8</ColorTransformer>
+        <PointSize>2</PointSize>
+        <Alpha>1.0</Alpha>
+      </Display>
+
+      <!-- 7) EKF 융합된 GPS/Odometry -->
+      <Display name="Filtered Odometry" class="rviz::Odometry">
+        <Enable>true</Enable>
+        <Topic>/gps/filtered</Topic>
+        <QueueSize>10</QueueSize>
+        <Axis>Arrow</Axis>
+        <Scale>0.3</Scale>
+        <Color>0; 255; 0</Color>
+      </Display>
+
+      <!-- 8) 생성된 Mid Line Path -->
+      <Display name="Mid Line Path" class="rviz::Path">
+        <Enable>true</Enable>
+        <Topic>/mid_line_path</Topic>
+        <QueueSize>10</QueueSize>
+        <Color>0; 0; 255</Color>
+        <Width>0.05</Width>
+      </Display>
+
+      <!-- 9) Cone 3D 마커 -->
+      <Display name="Cone Markers" class="rviz::MarkerArray">
+        <Enable>true</Enable>
+        <Topic>/cone_markers</Topic>
+        <QueueSize>10</QueueSize>
+      </Display>
+    </Displays>
+
+    <!-- 툴 (카메라 움직임, 선택 등) -->
+    <Tools>
+      <Tool name="Interact"     class="rviz/Interact"/>
+      <Tool name="Move Camera"  class="rviz/MoveCamera"/>
+      <Tool name="Select"       class="rviz/Select"/>
+      <Tool name="Measure"      class="rviz/Measure"/>
+    </Tools>
+
+    <!-- 카메라 뷰 설정: 실차/실험 환경 맞게 -->
+    <Views>
+      <Current>
+        <Class>rviz/Orbit</Class>
+        <Distance>8</Distance>
+        <Yaw>1.0</Yaw>
+        <Pitch>-0.5</Pitch>
+        <FocalPoint>0; 0; 0</FocalPoint>
+      </Current>
+    </Views>
+  </VisualizationConfig>
+</rviz>

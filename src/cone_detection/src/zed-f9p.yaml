@@ -1,0 +1,71 @@
+# ZED-F9P GPS 모듈 설정 (zed-f9p.yaml)
+
+# ─────────────────────────────────────────
+# 디버그 및 장치 기본값
+debug: 1
+device: "/dev/ttyACM0"
+frame_id: "gps"
+
+# ─────────────────────────────────────────
+# UART1 시리얼 통신 속도 (RTCM 전송용)
+uart1:
+  baudrate: 460800     # 최소 115200 이상 권장
+  in_proto_mask: 3     # UBX + NMEA 입력 수신
+  out_proto_mask: 1    # UBX 전용 출력
+
+# ─────────────────────────────────────────
+# 측정 주기 (Hz)
+rate: 8
+
+# ─────────────────────────────────────────
+# ROS 퍼블리시 설정
+publish:
+  all: false
+  nav:
+    all: true
+    posecef:  true      # ECEF 위치
+    posllh:   true      # 위경도/고도
+    velned:   true      # NED 속도
+    relposned: true      # RTK 상대 위치
+  mon:
+    all: false
+    hw:    true         # 하드웨어 모니터링
+  rxm:
+    raw:  true          # 원시 측정 데이터
+    rtcm: false         # RTCM 메시지는 외부(ntrip_ros)에서 제공
+  aid:
+    eph:  true          # Ephemeris
+    alm:  true          # Almanac
+
+# ─────────────────────────────────────────
+# RTCM 보정 데이터 (ntrip_ros → ublox_gps)
+rtcm_topic: "/ublox_gps/rtcm"
+rtcm:
+  in:  true             # RTK 보정 수신 활성화
+  out: false            # Base 모드 아님
+
+# ─────────────────────────────────────────
+# 사용 위성 시스템 (다중 GNSS 활성화)
+gnss:
+  gps:     true
+  glonass: true
+  galileo: true
+  beidou:  true
+
+# ─────────────────────────────────────────
+# NAV5 설정 (동적 모델, DGNSS 모드)
+cfg:
+  nav5:
+    dynModel: 4         # 4 = Automotive (차량용)
+  dgnss_mode: 3         # 3 = RTK mode (DGPS/RTK)
+
+# ─────────────────────────────────────────
+# TMODE3 (베이스→로버) 설정
+tmode3:
+  config: false         # rover 모드 (서베이인/고정 베이스 불필요)
+
+# ─────────────────────────────────────────
+# RAW 데이터 스트림 (IMU 프레임)
+raw_data:
+  imu_frame_id: "zed2i_imu_link"
+

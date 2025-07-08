@@ -1,0 +1,243 @@
+<?xml version="1.0" ?>
+<robot name="ev_cart" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- 색상/재질 include -->
+  <xacro:include filename="$(find zed_wrapper)/urdf/include/materials.urdf.xacro"/>
+  <xacro:property name="PI" value="3.1415926535897931"/>
+
+  <!-- ================= 센서/바퀴/카메라 등 "위치·자세·오리진" 변수 한 곳에 선언 ================= -->
+  <!-- 차체(본체) 기본 치수/질량 -->
+  <xacro:property name="body_length" value="1.2"/>
+  <xacro:property name="body_width"  value="0.7"/>
+  <xacro:property name="body_height" value="0.3"/>
+  <xacro:property name="body_mass"   value="120"/>
+
+  <!-- 바퀴 위치 (실차 치수/트레드/휠베이스에 맞게) -->
+  <xacro:property name="wheel_radius" value="0.13"/>
+  <xacro:property name="wheel_width"  value="0.09"/>
+  <xacro:property name="wheel_mass"   value="5"/>
+  <xacro:property name="wheel_base_x" value="0.45"/>
+  <xacro:property name="wheel_base_y" value="0.3"/>
+  <xacro:property name="wheel_z"      value="0.13"/>
+
+  <!-- ZED2i 카메라 위치/회전 (실측 후 수정!) -->
+  <xacro:property name="zed2i_x" value="0.6"/>
+  <xacro:property name="zed2i_y" value="0.0"/>
+  <xacro:property name="zed2i_z" value="0.45"/>
+  <xacro:property name="zed2i_roll"  value="0.0"/>
+  <xacro:property name="zed2i_pitch" value="0.0"/>
+  <xacro:property name="zed2i_yaw"   value="0.0"/>
+
+  <!-- IMU 위치 (실측 후 수정!) -->
+  <xacro:property name="imu_x" value="0.55"/>
+  <xacro:property name="imu_y" value="0.0"/>
+  <xacro:property name="imu_z" value="0.47"/>
+  <xacro:property name="imu_roll"  value="0.0"/>
+  <xacro:property name="imu_pitch" value="0.0"/>
+  <xacro:property name="imu_yaw"   value="0.0"/>
+
+  <!-- GPS 위치 (실측 후 수정!) -->
+  <xacro:property name="gps_x" value="0.7"/>
+  <xacro:property name="gps_y" value="0.0"/>
+  <xacro:property name="gps_z" value="0.85"/>
+  <xacro:property name="gps_roll"  value="0.0"/>
+  <xacro:property name="gps_pitch" value="0.0"/>
+  <xacro:property name="gps_yaw"   value="0.0"/>
+
+  <!-- 라이다 위치(예시, 필요시) -->
+  <xacro:property name="lidar_x" value="0.65"/>
+  <xacro:property name="lidar_y" value="0.0"/>
+  <xacro:property name="lidar_z" value="0.60"/>
+  <xacro:property name="lidar_roll"  value="0.0"/>
+  <xacro:property name="lidar_pitch" value="0.0"/>
+  <xacro:property name="lidar_yaw"   value="0.0"/>
+
+  <!-- ===================== 본체(base_link) ===================== -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="${body_length} ${body_width} ${body_height}"/>
+      </geometry>
+      <origin xyz="0 0 ${body_height/2}" rpy="0 0 0"/>
+      <material name="Gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${body_length} ${body_width} ${body_height}"/>
+      </geometry>
+      <origin xyz="0 0 ${body_height/2}" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${body_mass}"/>
+      <origin xyz="0 0 ${body_height/2}" rpy="0 0 0"/>
+      <inertia ixx="10" ixy="0" ixz="0" iyy="50" iyz="0" izz="50"/>
+    </inertial>
+  </link>
+
+  <!-- ===================== 바퀴 ===================== -->
+  <link name="rear_left_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin xyz="-${wheel_base_x} ${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+      <material name="Black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin xyz="-${wheel_base_x} ${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+    </inertial>
+  </link>
+  <link name="rear_right_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin xyz="-${wheel_base_x} -${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+      <material name="Black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin xyz="-${wheel_base_x} -${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+    </inertial>
+  </link>
+  <link name="front_left_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin xyz="${wheel_base_x} ${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+      <material name="Black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin xyz="${wheel_base_x} ${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+    </inertial>
+  </link>
+  <link name="front_right_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin xyz="${wheel_base_x} -${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+      <material name="Black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      <origin xyz="${wheel_base_x} -${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${wheel_mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+    </inertial>
+  </link>
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_left_wheel"/>
+    <origin xyz="-${wheel_base_x} ${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_right_wheel"/>
+    <origin xyz="-${wheel_base_x} -${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_left_wheel"/>
+    <origin xyz="${wheel_base_x} ${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_right_wheel"/>
+    <origin xyz="${wheel_base_x} -${wheel_base_y} ${wheel_z}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- ============= ZED2i 카메라(xacro로 포함, 실측값 property로 제어) ============= -->
+  <xacro:include filename="$(find zed_wrapper)/urdf/zed_descr.urdf.xacro"/>
+  <xacro:zed_camera
+    name="zed2i"
+    model="zed2i"
+    parent="base_link">
+    <origin xyz="${zed2i_x} ${zed2i_y} ${zed2i_z}" rpy="${zed2i_roll} ${zed2i_pitch} ${zed2i_yaw}"/>
+  </xacro:zed_camera>
+
+  <!-- ============= GPS 센서 ============= -->
+  <link name="gps">
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="0.05"/>
+      </geometry>
+      <origin xyz="${gps_x} ${gps_y} ${gps_z}" rpy="0 0 0"/>
+      <material name="Blue"/>
+    </visual>
+  </link>
+  <joint name="gps_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="gps"/>
+    <origin xyz="${gps_x} ${gps_y} ${gps_z}" rpy="${gps_roll} ${gps_pitch} ${gps_yaw}"/>
+  </joint>
+
+  <!-- ============= IMU 센서 ============= -->
+  <link name="zed2i_imu_link">
+    <visual>
+      <geometry>
+        <box size="0.06 0.06 0.04"/>
+      </geometry>
+      <origin xyz="${imu_x} ${imu_y} ${imu_z}" rpy="0 0 0"/>
+      <material name="Red"/>
+    </visual>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="zed2i_imu_link"/>
+    <origin xyz="${imu_x} ${imu_y} ${imu_z}" rpy="${imu_roll} ${imu_pitch} ${imu_yaw}"/>
+  </joint>
+
+  <!-- ============= (필요시) 라이다 등 추가 센서 ============= -->
+  <!--
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.05" radius="0.07"/>
+      </geometry>
+      <origin xyz="${lidar_x} ${lidar_y} ${lidar_z}" rpy="0 0 0"/>
+      <material name="Yellow"/>
+    </visual>
+  </link>
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="${lidar_x} ${lidar_y} ${lidar_z}" rpy="${lidar_roll} ${lidar_pitch} ${lidar_yaw}"/>
+  </joint>
+  -->
+
+  <!-- ============= 주의: 실측값 반영은 파일 맨 위 property 값만 수정하면 됨 ============= -->
+</robot>

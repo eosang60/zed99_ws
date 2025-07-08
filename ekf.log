@@ -1,0 +1,152 @@
+header: 
+  seq: 3161
+  stamp: 
+    secs: 1750846349
+    nsecs: 502788983
+  frame_id: ''
+level: 4
+name: "/path_planner"
+msg: "Insufficient cones detected for path planning."
+file: "/home/eohjin/zed99_ws/src/cone_detection/src/path_planner_pairing.cpp"
+function: "coneCallback"
+line: 89
+topics: 
+  - /rosout
+  - /mid_line_path
+---
+header: 
+  seq: 3508
+  stamp: 
+    secs: 1750846349
+    nsecs: 538540171
+  frame_id: ''
+level: 2
+name: "/navsat_transform"
+msg: "Datum (latitude, longitude, altitude) is (37.228064, 127.068219, 78.864000)"
+file: "/tmp/binarydeb/ros-noetic-robot-localization-2.7.7/src/navsat_transform.cpp"
+function: "NavSatTransform::setTransformGps"
+line: 900
+topics: 
+  - /rosout
+  - /tf_static
+  - /odometry/gps
+  - /gps/filtered
+---
+header: 
+  seq: 3509
+  stamp: 
+    secs: 1750846349
+    nsecs: 538593644
+  frame_id: ''
+level: 2
+name: "/navsat_transform"
+msg: "Datum UTM coordinate is (328623.623167, 4121921.011245) zone 52"
+file: "/tmp/binarydeb/ros-noetic-robot-localization-2.7.7/src/navsat_transform.cpp"
+function: "NavSatTransform::setTransformGps"
+line: 902
+topics: 
+  - /rosout
+  - /tf_static
+  - /odometry/gps
+  - /gps/filtered
+---
+header: 
+  seq: 214
+  stamp: 
+    secs: 1750846349
+    nsecs: 561367729
+  frame_id: ''
+level: 4
+name: "/motor_controller"
+msg: "No path available."
+file: "/home/eohjin/zed99_ws/src/cone_detection/src/motor_controller.cpp"
+function: "TimerEvent&)"
+line: 73
+topics: 
+  - /rosout
+  - /cmd_drive
+---
+header: 
+  seq: 3162
+  stamp: 
+    secs: 1750846349
+    nsecs: 582974751
+  frame_id: ''
+level: 4
+name: "/path_planner"
+msg: "Insufficient cones detected for path planning."
+file: "/home/eohjin/zed99_ws/src/cone_detection/src/path_planner_pairing.cpp"
+function: "coneCallback"
+line: 89
+topics: 
+  - /rosout
+  - /mid_line_path
+---
+header: 
+  seq: 3163
+  stamp: 
+    secs: 1750846349
+    nsecs: 634465079
+  frame_id: ''
+level: 4
+name: "/path_planner"
+msg: "Insufficient cones detected for path planning."
+file: "/home/eohjin/zed99_ws/src/cone_detection/src/path_planner_pairing.cpp"
+function: "coneCallback"
+line: 89
+topics: 
+  - /rosout
+  - /mid_line_path
+---
+header: 
+  seq: 3510
+  stamp: 
+    secs: 1750846349
+    nsecs: 663267879
+  frame_id: ''
+level: 2
+name: "/navsat_transform"
+msg: "Datum (latitude, longitude, altitude) is (37.228064, 127.068219, 78.870000)"
+file: "/tmp/binarydeb/ros-noetic-robot-localization-2.7.7/src/navsat_transform.cpp"
+function: "NavSatTransform::setTransformGps"
+line: 900
+topics: 
+  - /rosout
+  - /tf_static
+  - /odometry/gps
+  - /gps/filtered
+---
+header: 
+  seq: 3511
+  stamp: 
+    secs: 1750846349
+    nsecs: 663301308
+  frame_id: ''
+level: 2
+name: "/navsat_transform"
+msg: "Datum UTM coordinate is (328623.614069, 4121921.000330) zone 52"
+file: "/tmp/binarydeb/ros-noetic-robot-localization-2.7.7/src/navsat_transform.cpp"
+function: "NavSatTransform::setTransformGps"
+line: 902
+topics: 
+  - /rosout
+  - /tf_static
+  - /odometry/gps
+  - /gps/filtered
+---
+header: 
+  seq: 3164
+  stamp: 
+    secs: 1750846349
+    nsecs: 702847772
+  frame_id: ''
+level: 4
+name: "/path_planner"
+msg: "Insufficient cones detected for path planning."
+file: "/home/eohjin/zed99_ws/src/cone_detection/src/path_planner_pairing.cpp"
+function: "coneCallback"
+line: 89
+topics: 
+  - /rosout
+  - /mid_line_path
+---

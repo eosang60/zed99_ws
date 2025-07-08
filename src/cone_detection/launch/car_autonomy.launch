@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 전역 remap: navsat_transform_node에서 gps → /ublox_gps/fix로 강제 -->
+  <remap from="/gps/fix" to="/ublox_gps/fix"/>
+  <remap from="gps" to="/ublox_gps/fix"/>
+  <remap from="imu/data" to="/zed2i/zed_node/imu/data"/>
+
+  <!-- 로봇 전체 URDF, TF 트리 -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find car_description)/urdf/car_description.urdf.xacro'" />
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen" />
+
+  <!-- ZED 2i 카메라 -->
+  <include file="$(find zed_wrapper)/launch/zed2i.launch" />
+
+  <!-- UBlox GPS -->
+  <include file="$(find cone_detection)/src/ublox_device.launch" />
+
+  <!-- RTK NTRIP 보정 신호 -->
+  <include file="$(find cone_detection)/launch/ntrip_ros.launch" />
+
+  <!-- NavSat (GPS→Odometry) 변환 필수 추가 -->
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" output="screen">
+    <param name="frequency" value="30"/>
+    <param name="gps_frame" value="gps"/>
+    <param name="base_link_frame" value="base_link"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="wait_for_datum" value="false"/>
+    <param name="datum_lat" value="37.2276752"/>
+    <param name="datum_lon" value="127.0681433"/>
+    <param name="datum_alt" value="115.126"/>
+    <param name="broadcast_cartesian_transform" value="false"/>
+    <param name="use_odometry_yaw" value="false"/>
+    <param name="publish_filtered_gps" value="true"/>
+    <param name="filtered_gps_topic" value="/gps/filtered"/>
+  </node>
+
+  <!-- EKF Localization (명시적 추가) -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localizer" output="screen" clear_params="true">
+    <rosparam command="load" file="$(find cone_detection)/src/ekf_config.yaml"/>
+  </node>
+
+
+
+  <!-- 이하 동일 ... -->
+  <node pkg="cone_detection" type="cone_detect.py" name="cone_detect" output="screen" />
+  <node pkg="cone_detection" type="cone_3d_node" name="cone_3d_node" output="screen"/>
+  <node pkg="cone_detection" type="path_planner_pairing" name="path_planner" output="screen">
+    <param name="target_frame" value="base_link"/>
+  </node>
+  <node pkg="cone_detection" type="motor_controller" name="motor_controller" output="screen"/>
+  <node pkg="rviz" type="rviz" name="rviz" output="screen"
+        args="-d $(find cone_detection)/rviz/view_car_autonomy.rviz" />
+</launch>

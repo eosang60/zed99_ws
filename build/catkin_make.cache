@@ -1,0 +1,2 @@
+car_description:cone_detection:ntrip_ros:rtcm_msgs:ublox_f9p/ublox:ublox_f9p/ublox_serialization:ublox_gps:ublox_msgs:zed-ros-wrapper/zed-ros-interfaces:zed-ros-wrapper/zed_nodelets:zed-ros-wrapper/zed_ros:zed-ros-wrapper/zed_wrapper
+-DCATKIN_DEVEL_PREFIX=/home/eohjin/zed99_ws/devel -DCMAKE_INSTALL_PREFIX=/home/eohjin/zed99_ws/install -G Unix Makefiles
